@@ -11,7 +11,7 @@ export is_cmfield, is_cmtype, all_cmtypes
 # Bogdan Adrian Dina ...
 # todo: 1. write documentation about the algorithms
 # 2. write examples for the methods
-# 3. write also the algorithms numerically over CC 
+# 3. write also the algorithms numerically over CC.
 
 
 
