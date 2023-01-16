@@ -15,10 +15,21 @@ export is_cmfield, is_cmtype, all_cmtypes
 
 
 """
-	is_cmfield(K::NumField) --> Bool
+
+"""
+function compute_involution(K::NumField)
+
+	return true
+end
+
+
+"""
+	is_cmfield(K::NumField) --> ...
 	
 	Documentation: 
-	...
+	Tests if K is a CM field. If so, also returns the totally real subfield K0 as well as the corresponding involution.
+	
+	
 """
 function is_cmfield(K::NumField)
 	
@@ -38,15 +49,20 @@ function is_cmfield(K::NumField)
 	#TODO: find element corresponding to complex conjugation on K and return it
 	# Write for that a function. 
 	#auts = automorphism_list(K)
-	return true
+	ccK = compute_involution(K)
+	
+	# computes the totally real sub
+	K0_tup = totally_real_subfield(K)
+	
+	return true, ccK, K0_tup
 end
 
 """
 	totally_real_subfield(K::NumField) --> Tuple{AnticNumberField, NfToNfMor}
 	
 	Documentation: 
-	Given a cm field $K$, returns its totally real subfield $K_0$ and an embedding $\iota K_0 \to K$.
-	If $K$ is not a cm field, returns `false` and the identity map on K.
+	Given a cm field K, returns its totally real subfield K0 and an embedding iota: K0 --> K.
+	If K is not a cm field, returns `false` and the identity map on K.
 """
 function totally_real_subfield(K::NumField)
 	
@@ -85,6 +101,7 @@ function is_cmtype(phi)
 	end
 	return true
 end
+
 
 """
 	all_cmtypes(K::NumField, primitive = true) --> 
