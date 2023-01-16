@@ -31,9 +31,8 @@ function is_cmfield(K::NumField)
 	end
 	
 	auts = automorphism_list(K)
-	#ccK = Hecke._find_complex_conj(auts)
-	
-	return true, ccK
+	#TODO: find element corresponding to complex conjugation on K and return it 
+	return true
 end
 
 function totally_real_subfield(K::NumField)
