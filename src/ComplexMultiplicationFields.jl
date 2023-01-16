@@ -14,7 +14,12 @@ export is_cmfield, is_cmtype, all_cmtypes
 # 3. write also the algorithms numerically over CC.
 
 
-
+"""
+	is_cmfield(K::NumField) --> Bool
+	
+	Documentation: 
+	...
+"""
 function is_cmfield(K::NumField)
 	
 	if is_totally_real(K)
@@ -39,6 +44,7 @@ end
 """
 	totally_real_subfield(K::NumField) --> Tuple{AnticNumberField, NfToNfMor}
 	
+	Documentation: 
 	Given a cm field $K$, returns its totally real subfield $K_0$ and an embedding $\iota K_0 \to K$.
 	If $K$ is not a cm field, returns `false` and the identity map on K.
 """
@@ -60,6 +66,11 @@ function totally_real_subfield(K::NumField)
 	return tup
 end
 
+"""
+	is_cmtype(...) --> Bool
+	Documentation:
+	...
+"""
 function is_cmtype(phi)
 
 	L = codomain( phi[1] )
@@ -75,6 +86,11 @@ function is_cmtype(phi)
 	return true
 end
 
+"""
+	all_cmtypes(K::NumField, primitive = true) --> 
+	Documentation:
+	...
+"""
 function all_cmtypes(K::NumField, primitive = true)
 	
 	@assert is_cmfield(K) "error: K is not a cm field ..."
@@ -90,5 +106,7 @@ function all_cmtypes(K::NumField, primitive = true)
 
 	return all_cmtypes	
 end
+
+
 
 end
