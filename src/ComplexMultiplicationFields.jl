@@ -30,15 +30,22 @@ function is_cmfield(K::NumField)
 		return false, id_hom(K)
 	end
 	
-	auts = automorphism_list(K)
-	#TODO: find element corresponding to complex conjugation on K and return it 
+	#TODO: find element corresponding to complex conjugation on K and return it
+	# Write for that a function. 
+	#auts = automorphism_list(K)
 	return true
 end
 
+"""
+	totally_real_subfield(K::NumField) --> Tuple{AnticNumberField, NfToNfMor}
+	
+	Given a cm field $K$, returns its totally real subfield $K_0$ and an embedding $\iota K_0 \to K$.
+	If $K$ is not a cm field, returns `false` and the identity map on K.
+"""
 function totally_real_subfield(K::NumField)
 	
 	if is_cmfield(K) == false
-		return []
+		return false, id_hom(K)
 	end
 	
 	degK = degree(K) 
@@ -49,7 +56,7 @@ function totally_real_subfield(K::NumField)
 	if length(realsubfs) == 1
 		tup = realsubfs[1]
 	end
-		
+	
 	return tup
 end
 
