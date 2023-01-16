@@ -16,22 +16,24 @@ export is_cmfield, is_cmtype, all_cmtypes
 
 
 function is_cmfield(K::NumField)
-	degK = degree(K)
 	
 	if is_totally_real(K)
-		return false
-	elseif ( degK % 2 ) != 0
-		return false
+		return false, id_hom(K)
+	elseif ( degree(K) % 2 ) != 0
+		return false, id_hom(K)
 	end
 	
 	subfs = subfields(K)
-	realsubfs = [ tup for tup in subfs if ( is_totally_real(tup[1]) == true ) &&  degree(tup[1]) == ( degK//2 ) ]
+	realsubfs = [ tup for tup in subfs if ( is_totally_real(tup[1]) == true ) &&  degree(tup[1]) == ( degree(K)//2 ) ]
 	
 	if ( length(realsubfs) > 1 ) || ( length(realsubfs) == 0 )
-		return false
+		return false, id_hom(K)
 	end
 	
-	return true
+	auts = automorphism_list(K)
+	#ccK = Hecke._find_complex_conj(auts)
+	
+	return true, ccK
 end
 
 function totally_real_subfield(K::NumField)
@@ -67,11 +69,10 @@ function is_cmtype(phi)
 	return true
 end
 
-function all_cmtypes(K::NumField)
+function all_cmtypes(K::NumField, primitive = true)
 	
-	if is_cmfield(K) == false
-	 	return false, []
-	end	
+	@assert is_cmfield(K) "error: K is not a cm field ..."
+	
 	L = splitting_field(K.pol)
 	_, phi = is_subfield(K, L)
 	AutL = automorphism_list(L)
@@ -83,12 +84,5 @@ function all_cmtypes(K::NumField)
 
 	return all_cmtypes	
 end
-
-function all_cmtypes_numerically(K::NumField)
-# TODO:	
-end
-
-
-
 
 end
