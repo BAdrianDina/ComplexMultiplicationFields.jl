@@ -12,13 +12,17 @@ export is_cmfield, is_cmtype, all_cmtypes
 # todo: 1. write documentation about the algorithms
 # 2. write examples for the methods
 # 3. write also the algorithms numerically over CC.
+# K, a = NumberField(x^4 - x^3 - 2*x + 4, "a")
+# K, a = NumberField(x^6 - 2*x^5 + 2*x^4 + 2*x^3 + 4*x^2 - 4*x + 2, "a")
+# K, a = NumberField(x^6 - x^5 - x^4 + 2*x^3 - x + 1, "a"), not a cm field
 
 
 """
 
 """
 function compute_involution(K::NumField)
-
+	
+	
 	return true
 end
 
@@ -33,12 +37,23 @@ end
 """
 function is_cmfield(K::NumField)
 	
-	if is_totally_real(K)
+	dK = degree(K)
+	
+	if length( infinite_places(K) ) != Integer( dK // 2 )
 		return false, id_hom(K)
-	elseif ( degree(K) % 2 ) != 0
+	elseif ( dK % 2 ) != 0
+		return false, id_hom(K)
+	elseif is_totally_real(K)
 		return false, id_hom(K)
 	end
 	
+	# Special case of degree 2: 
+	if dK == 2
+    	return true, complex_conjugation(K), QQ
+	end
+	
+	# degree > 2:
+	# TODO: I am here
 	subfs = subfields(K)
 	realsubfs = [ tup for tup in subfs if ( is_totally_real(tup[1]) == true ) &&  degree(tup[1]) == ( degree(K)//2 ) ]
 	
@@ -50,6 +65,28 @@ function is_cmfield(K::NumField)
 	# Write for that a function. 
 	#auts = automorphism_list(K)
 	ccK = compute_involution(K)
+	
+	a = basis(K)[2]
+	phi = complex_embeddings(K)[1]
+	aCC = phiCC(a)
+	# genCC := EmbedExtra(K.1);
+	# test, invr := AlgebraizeElementExtra(ComplexConjugate(genCC), K);
+	# if not test then
+    #return false, 0, 0;
+	#end if;
+	#invK := hom< K -> K | invr >;
+	#/* Take fixed field and check that it is totally real */
+	#K0, hK0K := FixedFieldExtra(K, [ invK ]); ninfsK0 := #InfinitePlaces(K);
+	#if not #InfinitePlaces(K0) eq (dK div 2) then return false, 0, 0; end if;
+	# /* Take fixed field and check that it is totally real */
+	#K0, hK0K := FixedFieldExtra(K, [ invK ]); ninfsK0 := #InfinitePlaces(K);
+	#if not #InfinitePlaces(K0) eq (dK div 2) then return false, 0, 0; end if;
+	#/* Check and return */
+	#assert IsTotallyReal(K0);
+	#assert invK(invK(K.1)) eq K.1;
+	#assert invK(hK0K(K0.1)) eq hK0K(K0.1);
+	#tup := [* K0, hK0K *];
+	#return true, tup, invK;
 	
 	# computes the totally real sub
 	K0_tup = totally_real_subfield(K)
